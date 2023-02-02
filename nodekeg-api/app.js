@@ -4,11 +4,25 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var cors = require('cors');
+const config = require('config');
+
+// set the environment postfix
+var environment = '';
+switch(config.get('app.environment'))
+{
+  case 'test':
+    environment = '-test';
+    break;
+  default:
+    environment = '';
+}
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var testAPIRouter = require('./routes/testAPI');
-var temperatureSensorRouter = require('./routes/sensors/temperatureSensor');
+
+// load the sensor routers
+var temperatureSensorRouter = require(`./routes/sensors/temperatureSensor${environment}`);
 
 var app = express();
 
